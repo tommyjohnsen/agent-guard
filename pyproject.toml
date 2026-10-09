@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-guard"
+version = "0.1.0"
+description = "Stdlib-only secret scanner, POSIX permission/ACL verifier, and action policy gate for automation and AI agents."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "The agent-guard authors" }]
+requires-python = ">=3.10"
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+]
+keywords = ["secrets", "secret-scanning", "acl", "permissions", "policy", "ai-agents"]
+
+[project.scripts]
+guard-scan = "guardlib.scanner:main"
+guard-perm = "guardlib.permcheck:main"
+guard-gate = "guardlib.gate:main"
+
+[tool.setuptools]
+packages = ["guardlib"]

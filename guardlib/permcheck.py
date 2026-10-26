@@ -1,3 +1,7 @@
+# PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
+# written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
+# modified-by: codex/gpt-5.6-sol | 2026-10-26 | pending | check forbidden default ACL principals and add provenance block
+# END PROVENANCE
 """Filesystem permission and ACL verifier.
 
 Checks mode bits, owner and group, POSIX ACL named entries, the mask, default
@@ -280,6 +284,13 @@ class Acl:
 
     def find_named(self, kind: str, qualifier: str) -> AclEntry | None:
         for entry in self.entries:
+            if entry.kind == kind and entry.qualifier == qualifier:
+                return entry
+        return None
+
+    def find_named_default(self, kind: str, qualifier: str) -> AclEntry | None:
+        """Find a named entry in the default ACL, if present."""
+        for entry in self.default_entries:
             if entry.kind == kind and entry.qualifier == qualifier:
                 return entry
         return None
@@ -642,14 +653,23 @@ def _acl_findings(facts: PathFacts, policy: PathPolicy) -> list[PermFinding]:
             )
 
     for kind, qualifier in policy.forbid_named:
-        entry = facts.acl.find_named(kind, qualifier)
-        if entry is not None:
-            granted = effective_perms(entry, facts.acl.mask)
+        candidates = (
+            (facts.acl.find_named(kind, qualifier), facts.acl.mask, "access ACL"),
+            (
+                facts.acl.find_named_default(kind, qualifier),
+                facts.acl.default_mask,
+                "default ACL",
+            ),
+        )
+        for entry, mask, where in candidates:
+            if entry is None:
+                continue
+            granted = effective_perms(entry, mask)
             findings.append(
                 PermFinding(
                     facts.path,
                     "forbid_named",
-                    f"forbidden ACL entry {kind}:{qualifier} is present",
+                    f"forbidden ACL entry {kind}:{qualifier} is present in {where}",
                     "absent",
                     f"declared {entry.perms}, effective {granted}",
                 )

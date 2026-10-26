@@ -1,3 +1,7 @@
+# PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
+# written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
+# modified-by: codex/gpt-5.6-sol | 2026-10-26 | pending | provenance block added
+# END PROVENANCE
 """Tests for guardlib.gate.
 
 Covers the five refused classes, the ordinary-allow classes, the REVIEW

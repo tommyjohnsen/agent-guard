@@ -1,3 +1,7 @@
+# PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
+# written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
+# modified-by: codex/gpt-5.6-sol | 2026-10-26 | pending | cover forbidden default ACL principals and add provenance block
+# END PROVENANCE
 """Tests for guardlib.permcheck.
 
 ACL rules are exercised two ways: against fixture text (so every rule is
@@ -410,6 +414,19 @@ class AclPolicyTests(unittest.TestCase):
         self.assertEqual(findings[0].check, "forbid_named")
         self.assertIn("effective ---", findings[0].actual)
 
+    def test_forbidden_entry_in_default_acl_is_flagged(self):
+        text = (
+            "user::rwx\ngroup::r-x\nmask::r-x\nother::---\n"
+            "default:user::rwx\ndefault:user:agent-bot:r-x\n"
+            "default:group::r-x\ndefault:mask::---\ndefault:other::---\n"
+        )
+        policy = permcheck.PathPolicy(forbid_named=(("user", "agent-bot"),))
+        findings = permcheck.verify(self._facts_with(text, is_dir=True), policy)
+        self.assertEqual(len(findings), 1)
+        self.assertEqual(findings[0].check, "forbid_named")
+        self.assertIn("default ACL", findings[0].message)
+        self.assertIn("effective ---", findings[0].actual)
+
     def test_mask_exactly_match_and_mismatch(self):
         ok = permcheck.PathPolicy(mask_exactly="r--")
         self.assertEqual(permcheck.verify(self._facts_with(self.EFFECTIVE), ok), [])
@@ -518,6 +535,20 @@ class AclIntegrationTests(unittest.TestCase):
         self.assertEqual(permcheck.verify(facts, permcheck.PathPolicy(
             require_default_acl=True, allow_world_readable=True
         )), [])
+
+    def test_forbidden_principal_in_real_default_acl_is_detected(self):
+        synthetic_uid = 424242
+        if not _setfacl("-d", "-m", f"u:{synthetic_uid}:r-x", self.root):
+            self.skipTest("setfacl cannot add a synthetic default entry here")
+        facts = permcheck.collect(self.root)
+        policy = permcheck.PathPolicy(
+            forbid_named=(("user", str(synthetic_uid)),),
+            allow_world_readable=True,
+        )
+        findings = permcheck.verify(facts, policy)
+        self.assertEqual(len(findings), 1)
+        self.assertEqual(findings[0].check, "forbid_named")
+        self.assertIn("default ACL", findings[0].message)
 
     def test_mask_only_file_has_no_named_entries(self):
         self.assertTrue(_setfacl("-m", "m::---", self.path))

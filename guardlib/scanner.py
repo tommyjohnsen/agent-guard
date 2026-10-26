@@ -1,3 +1,7 @@
+# PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
+# written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
+# modified-by: codex/gpt-5.6-sol | 2026-10-26 | pending | restrict path exemption and add provenance block
+# END PROVENANCE
 """Secret and credential scanner.
 
 Scans text, files and directory trees for private keys, API tokens, passwords,
@@ -643,15 +647,16 @@ def _looks_like_identifier(token: str) -> bool:
 
     Three tests, in order of how much of the corpus they explain:
 
-    * Two or more slashes is a path. 98% of this repository's entropy false
-      positives were paths under ``/Users/...`` or ``node_modules/...``.
+    * An explicit filesystem prefix is a path. Relative strings with two or
+      more slashes still have to pass the word-segment coverage test below;
+      Base64 credentials can contain multiple slashes too.
     * A single camelCase or PascalCase word is an identifier.
     * A separated token whose word segments cover ``IDENT_COVERAGE`` of its
       characters is an identifier with an opaque part, such as a temp-directory
       suffix. The coverage floor is what keeps a real token out: ``sk_live_``
       and ``npm_`` prefixes cover under a fifth of their token's characters.
     """
-    if token.count("/") >= 2:
+    if token.startswith(("/", "./", "../", "~/")):
         return True
     segments = re.split(r"[-/_.]", token)
     if len(segments) < 3:

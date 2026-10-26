@@ -1,3 +1,7 @@
+# PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
+# written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
+# modified-by: codex/gpt-5.6-sol | 2026-10-26 | pending | cover slash-containing Base64 regression and add provenance block
+# END PROVENANCE
 """Tests for guardlib.scanner.
 
 No real credentials appear here. Every fixture value is synthetic and built so
@@ -722,6 +726,15 @@ class EntropyFalsePositiveTests(unittest.TestCase):
     def test_path_rule_needs_two_separators(self):
         self.assertTrue(scanner._looks_like_identifier("a/b/c"))
         self.assertFalse(scanner._looks_like_identifier("wJalrXUtnFEMI/K7MDENGb"))
+
+    def test_base64_with_multiple_slashes_is_reported(self):
+        digest = hashlib.sha256(b"synthetic-secret-28").digest()
+        token = base64.b64encode(digest).decode("ascii")
+        self.assertGreaterEqual(token.count("/"), 2)
+        self.assertIn(
+            "high_entropy_base64",
+            {finding.rule_id for finding in scanner.scan_text(token)},
+        )
 
     def test_base64_is_not_mistaken_for_a_word_segment(self):
         self.assertFalse(scanner._is_word_segment("aGVsbG8"))

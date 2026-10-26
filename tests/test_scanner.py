@@ -2,6 +2,7 @@
 # written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
 # modified-by: codex/gpt-5.6-sol | 2026-10-26 | 1aaa682 | cover slash-containing Base64 regression and add provenance block
 # reviewed-by: claude-code/claude-opus-5-5 | 2026-10-26 | APPROVE_WITH_NITS
+# reviewed-by: grok-build/grok-4.7 | 2026-10-26 | APPROVE_WITH_NITS
 # END PROVENANCE
 """Tests for guardlib.scanner.
 

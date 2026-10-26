@@ -1,6 +1,6 @@
 # PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 # written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
-# modified-by: codex/gpt-5.6-sol | 2026-10-26 | pending | cover forbidden default ACL principals and add provenance block
+# modified-by: codex/gpt-5.6-sol | 2026-10-26 | 1aaa682 | cover forbidden default ACL principals and add provenance block
 # END PROVENANCE
 """Tests for guardlib.permcheck.
 

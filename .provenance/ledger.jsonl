@@ -57,6 +57,6 @@
 {"path":"examples/capstone.policy.json","blob":"0ad47a8a11269d8fc93a32e65f83ee9d9eef3411","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"fdeaacfb9f10fa420f943572f343014a8be6129d"}
 {"path":"docs/source-isolation.md","blob":"0a0ad0c059fd49a1d69487ad88aeefa9b6e34d2e","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"fdeaacfb9f10fa420f943572f343014a8be6129d"}
 {"path":"docs/validation.md","blob":"c8b6427db4574f1caa09347cd7243b51d5a98358","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"fdeaacfb9f10fa420f943572f343014a8be6129d"}
-{"path":"tests/test_runner.py","blob":"5505ef9a76aaff34ff6609a66fe701efb8728ba6","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/portable-bind-mount-fixture-v1"}
-{"path":"docs/source-isolation.md","blob":"838e62e4e3fe05cc986f4691ad4b0ba353344223","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/portable-bind-mount-fixture-v1"}
-{"path":"docs/validation.md","blob":"e8b4a831e339f3197f1862a7fb6dac5df3bc330e","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/portable-bind-mount-fixture-v1"}
+{"path":"tests/test_runner.py","blob":"5505ef9a76aaff34ff6609a66fe701efb8728ba6","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"23045fe4b66faf0aeb6489c3fdd7f3fc3d119000"}
+{"path":"docs/source-isolation.md","blob":"838e62e4e3fe05cc986f4691ad4b0ba353344223","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"23045fe4b66faf0aeb6489c3fdd7f3fc3d119000"}
+{"path":"docs/validation.md","blob":"e8b4a831e339f3197f1862a7fb6dac5df3bc330e","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"23045fe4b66faf0aeb6489c3fdd7f3fc3d119000"}

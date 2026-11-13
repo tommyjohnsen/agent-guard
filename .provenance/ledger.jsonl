@@ -64,3 +64,6 @@
 {"path":"docs/source-isolation.md","blob":"9cf248383fd117e69546886412d93673ec047849","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"9c5efd8b0424542d2759043bbb402e9a51d58c27"}
 {"path":"docs/validation.md","blob":"e41b6e4ef38f4772f77e34d34aa26e9517708b8e","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"9c5efd8b0424542d2759043bbb402e9a51d58c27"}
 {"path":".github/workflows/test.yml","blob":"e5e99ea47ce194f9786d56381a12bbfd1ca79e8b","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"9c5efd8b0424542d2759043bbb402e9a51d58c27"}
+{"path":"docs/source-isolation.md","blob":"3479b779a0d32018e2c5276444ba9e097e2fd80f","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/verified-linux-ci-host-v1"}
+{"path":"docs/validation.md","blob":"89d58dde96a142fe28d4449324f4bd49ce497d79","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/verified-linux-ci-host-v1"}
+{"path":".github/workflows/test.yml","blob":"a1fc8443921ff1e015c88961a7d634bdfdcc9302","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/verified-linux-ci-host-v1"}

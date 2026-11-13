@@ -1,7 +1,7 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-modified-by: codex/gpt-6 | 2026-11-13 | 9c5efd8b0424542d2759043bbb402e9a51d58c27
+modified-by: codex/gpt-6 | 2026-11-13 | :/verified-linux-ci-host-v1
 reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->
@@ -70,6 +70,12 @@ The fixture now asks Bubblewrap to create the synthetic nested bind mount during
 setup, then tests resolution with all capabilities dropped. The production
 runner's capability drop and disabled user namespaces remain in effect.
 No AppArmor, sysctl or desktop settings were changed to run the tests.
+
+GitHub's Ubuntu 26.04.1 regression matrix subsequently ran all **394 tests with
+zero skipped** on Python 3.10, 3.11 and 3.12. The separate Ubuntu 24.04 image
+failed the runner's actual preflight and correctly refused execution. The
+dedicated required-execution job now uses the verified Ubuntu 26.04 environment,
+without relaxing the isolation requirements or the host's security settings.
 
 This is implementation/test evidence, **not an independent security review**.
 No self-review verdict is issued. Current exact-commit APPROVE reviews from both

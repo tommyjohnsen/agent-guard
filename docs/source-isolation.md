@@ -1,7 +1,7 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-modified-by: codex/gpt-6 | 2026-11-13 | 9c5efd8b0424542d2759043bbb402e9a51d58c27
+modified-by: codex/gpt-6 | 2026-11-13 | :/verified-linux-ci-host-v1
 reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->
@@ -20,7 +20,7 @@ root-owned, non-setuid executable at `/usr/bin/bwrap`, without group/other write
 permission. The launcher refuses root. The actual namespace probe, rather than
 the version numbers, determines whether the host is usable.
 
-Ubuntu 24.04 installation prerequisites (operator commands; the runner installs
+Ubuntu 26.04 installation prerequisites (operator commands; the runner installs
 nothing and changes no system settings):
 
 ```sh
@@ -45,6 +45,11 @@ even on recent kernels. **Do not disable those host protections or change
 desktop account/service/provider settings to make this work.** Run on a suitable
 dedicated Linux host or VM and require preflight success there. No advisory
 fallback exists.
+
+The Ubuntu 26.04 CI image executed the real isolation tests. The tested Ubuntu
+24.04 CI image failed the actual isolation probe and was refused; installing a
+recent Bubblewrap alone does not establish that the host is supported. The
+dedicated isolation job therefore uses Ubuntu 26.04 without changing host policy.
 
 ## Exact synthetic launch
 

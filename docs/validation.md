@@ -1,7 +1,7 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-modified-by: codex/gpt-6 | 2026-11-13 | :/verified-linux-ci-host-v1
+modified-by: codex/gpt-6 | 2026-11-13 | 8361288a7ab6b972729bd29011bb08c2956ae6f8
 reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->

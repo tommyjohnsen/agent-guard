@@ -1,9 +1,8 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
-written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
-modified-by: codex/gpt-5.6-sol | 2026-10-26 | 1aaa682 | provenance block added
-reviewed-by: claude-code/claude-opus-5-5 | 2026-10-26 | APPROVE
-reviewed-by: grok-build/grok-4.7 | 2026-10-26 | APPROVE
+written-by: unknown (pre-provenance) | 2026-10-09 | f032f17ae5ef38af48d96e0a5c10e4bce725fbba
+modified-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
+reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->
 # agent-guard
@@ -14,7 +13,15 @@ Three small, dependency-free safety tools for automation and AI agents:
 - **`guard-perm`**: a filesystem permission and POSIX ACL verifier that understands mask clipping.
 - **`guard-gate`**: an action policy gate that returns `ALLOW`, `DENY` or `REVIEW` for a proposed action, with a reason a human can act on.
 
-Pure Python standard library, Python 3.10+. No network access and no root needed. `guard-perm` calls the read-only `getfacl` when it's installed and falls back to mode bits when it isn't.
+These three tools use the Python standard library, Python 3.10+, with no network access or root needed. `guard-perm` calls the read-only `getfacl` when it's installed and falls back to mode bits when it isn't.
+
+**Linux source protection:** the separate **`guard-run`** companion launches an
+entire agent workflow under Bubblewrap, with individually cleared, digest-pinned
+inputs, separate writable roots and an explicit network policy. Its actual
+restricted-process preflight must pass; it never falls back to advisory checks.
+It requires Bubblewrap 0.9.0+ and working Linux namespaces. See the
+[installation, synthetic launch, source policy and threat model](docs/source-isolation.md).
+The existing gate does **not** enforce filesystem isolation.
 
 ## Install
 
@@ -102,10 +109,16 @@ print(judgement.decision, judgement.reason)
 - **The scanner never stores a raw secret** on a finding.
 - **Scope.** These are guard rails for well-behaved automation and agents, not a sandbox. Use OS isolation for code you don't trust.
 
+That scope describes the scanner, permission checker and action gate.
+`guard-run` supplies a separate OS boundary for a supported Linux host; its
+[guarantees and limitations](docs/source-isolation.md#threat-model-and-limits)
+depend on launching the agent and its local tools inside that boundary.
+
 ## Tests
 
 ```
 make test      # or: python3 -m unittest discover -s tests -t . -b
+make test-isolation  # real restricted processes required; no skips allowed
 ```
 
 Running `guard-scan` on this repository reports findings: those are the scanner's own deliberate test fixtures and documentation examples, all fake. The provider-shaped fixture tokens (Stripe, GitLab, npm, private-key headers and similar) are built from concatenated parts so that provider-specific scanners and push protection don't match them. gitleaks reports no leaks on this tree. Generic password-style fixtures are left as plain literals because they are what the tests exercise.

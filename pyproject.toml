@@ -1,8 +1,7 @@
 # PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
-# written-by: unknown (pre-provenance) | 2026-10-09 | f032f17
-# modified-by: codex/gpt-5.6-sol | 2026-10-26 | 1aaa682 | provenance block added
-# reviewed-by: claude-code/claude-opus-5-5 | 2026-10-26 | APPROVE
-# reviewed-by: grok-build/grok-4.7 | 2026-10-26 | APPROVE
+# written-by: unknown (pre-provenance) | 2026-10-09 | f032f17ae5ef38af48d96e0a5c10e4bce725fbba
+# modified-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
+# reviews: pending current exact-commit claude-code and grok-build approval
 # END PROVENANCE
 [build-system]
 requires = ["setuptools>=61"]
@@ -29,6 +28,7 @@ keywords = ["secrets", "secret-scanning", "acl", "permissions", "policy", "ai-ag
 guard-scan = "guardlib.scanner:main"
 guard-perm = "guardlib.permcheck:main"
 guard-gate = "guardlib.gate:main"
+guard-run = "guardlib.runner:main"
 
 [tool.setuptools]
 packages = ["guardlib"]

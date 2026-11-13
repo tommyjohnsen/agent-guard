@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "runtime": [
+    {
+      "source": "/usr",
+      "target": "/usr"
+    }
+  ],
+  "input_roots": [
+    {
+      "id": "public",
+      "path": "/tmp/capstone-demo/public",
+      "files": [
+        {
+          "path": "cleared.txt",
+          "class": "PUBLIC/ALT",
+          "sha256": "3d77f70254693c7c441b5118a6998688c98a869a91359622d3b57eaa53e608d5"
+        }
+      ]
+    },
+    {
+      "id": "notes",
+      "path": "/tmp/capstone-demo/notes",
+      "files": [
+        {
+          "path": "interpretation.txt",
+          "class": "NOTES",
+          "sha256": "4968917b526192664bd335f4b1ce9b06a9b25532b075021f8d9250a887317ba0"
+        }
+      ]
+    }
+  ],
+  "writable": {
+    "out": "/tmp/capstone-demo/out",
+    "cache": "/tmp/capstone-demo/cache",
+    "tmp": "/tmp/capstone-demo/tmp"
+  },
+  "network": {
+    "mode": "none"
+  }
+}

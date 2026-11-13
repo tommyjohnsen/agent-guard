@@ -1,26 +1,37 @@
 # Provenance
 
-Generated from `.provenance/ledger.jsonl` by the operator tool; do not edit by hand. The ledger is the record of truth; per-file `PROVENANCE` headers mirror it, and the ledger wins on any disagreement.
+Generated from `.provenance/ledger.jsonl`; do not edit by hand. The ledger is the record of truth; per-file PROVENANCE headers mirror it. History without an established author remains `unknown (pre-provenance)`.
 
-Each ledger line is one JSON object with `path`, `blob`, `event` (`written` or `reviewed`), `by` (seat/model, or `unknown (pre-provenance)` for history whose author is not recorded), `date`, and either `commit` (written) or `verdict`, `head` and `record` (reviewed). Verdicts are `APPROVE`, `APPROVE_WITH_NITS` or `REJECT`.
+Each ledger line has `path`, `blob`, `event`, `by`, `date`, and either `commit` (written) or `verdict`, `head`, `record` (reviewed). `blob` is the Git blob SHA-1 after removing the complete PROVENANCE header, including enclosing Markdown comment lines. JSON and LICENSE are ledger-only.
 
-`blob` is the git blob SHA-1 of the file after removing its PROVENANCE header block: the lines from the `PROVENANCE` line through the `END PROVENANCE` line inclusive, plus a directly enclosing `<!--` / `-->` line pair. A review applies only while the file's current `blob` equals the reviewed one; any content change makes it stale. A release needs current reviews from claude-code and grok-build; an author never reviews its own work.
+A source commit cannot contain its own SHA. The implementation commit initially uses a resolvable Git message revision; a following provenance-only commit records that implementation SHA in its headers and ledger. No substantive code changes occur in that metadata commit.
 
-Files tracked: 14 (excluding this summary and `.provenance/`). Inline headers: 13. Ledger-only: 1. Written entries current: 14/14. Current reviews: claude-code 14, grok-build 14. Current REJECTs: 0.
+Current exact-commit reviews for this change: **pending** from both claude-code and grok-build. Historical review records below remain history, not approval of the current HEAD. The mandatory Tommy rule requires both seats to APPROVE the current exact SHA before merging, tagging or releasing; any subsequent commit voids that approval. No self-review has been recorded.
 
-| path | header | written-by (current content) | claude-code | grok-build |
-|---|---|---|---|---|
-| `.github/workflows/test.yml` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `.gitignore` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `LICENSE` | ledger | unknown (pre-provenance) | APPROVE | APPROVE |
-| `Makefile` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `README.md` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `guardlib/__init__.py` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `guardlib/gate.py` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `guardlib/permcheck.py` | inline | codex/gpt-5.6-sol | APPROVE | APPROVE |
-| `guardlib/scanner.py` | inline | codex/gpt-5.6-sol | APPROVE_WITH_NITS | APPROVE_WITH_NITS |
-| `pyproject.toml` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `tests/__init__.py` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `tests/test_gate.py` | inline | unknown (pre-provenance) | APPROVE | APPROVE |
-| `tests/test_permcheck.py` | inline | codex/gpt-5.6-sol | APPROVE_WITH_NITS | APPROVE |
-| `tests/test_scanner.py` | inline | codex/gpt-5.6-sol | APPROVE_WITH_NITS | APPROVE_WITH_NITS |
+Files tracked: 23. Current written records: 23/23.
+
+| path | written-by (current content) | current exact-SHA review |
+| --- | --- | --- |
+| `.github/workflows/test.yml` | codex/gpt-6 | pending |
+| `.gitignore` | unknown (pre-provenance) | pending |
+| `LICENSE` | unknown (pre-provenance) | pending |
+| `Makefile` | codex/gpt-6 | pending |
+| `README.md` | codex/gpt-6 | pending |
+| `docs/source-isolation.md` | codex/gpt-6 | pending |
+| `docs/validation.md` | codex/gpt-6 | pending |
+| `examples/capstone.policy.json` | codex/gpt-6 | pending |
+| `examples/make_synthetic_policy.py` | codex/gpt-6 | pending |
+| `guardlib/__init__.py` | unknown (pre-provenance) | pending |
+| `guardlib/_sandbox.py` | codex/gpt-6 | pending |
+| `guardlib/gate.py` | unknown (pre-provenance) | pending |
+| `guardlib/permcheck.py` | codex/gpt-5.6-sol | pending |
+| `guardlib/relay.py` | codex/gpt-6 | pending |
+| `guardlib/runner.py` | codex/gpt-6 | pending |
+| `guardlib/scanner.py` | codex/gpt-5.6-sol | pending |
+| `pyproject.toml` | codex/gpt-6 | pending |
+| `tests/__init__.py` | unknown (pre-provenance) | pending |
+| `tests/test_gate.py` | unknown (pre-provenance) | pending |
+| `tests/test_permcheck.py` | codex/gpt-5.6-sol | pending |
+| `tests/test_relay.py` | codex/gpt-6 | pending |
+| `tests/test_runner.py` | codex/gpt-6 | pending |
+| `tests/test_scanner.py` | codex/gpt-5.6-sol | pending |

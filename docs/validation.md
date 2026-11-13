@@ -1,7 +1,7 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-modified-by: codex/gpt-6 | 2026-11-13 | fdeaacfb9f10fa420f943572f343014a8be6129d
+modified-by: codex/gpt-6 | 2026-11-13 | :/portable-bind-mount-fixture-v1
 reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->
@@ -62,6 +62,13 @@ The approved output contained the expected synthetic input. Byte compilation
 and `git diff --check` also passed. No real research trees were inspected or
 modified. CI is configured to require real isolation rather than silently skip
 it; a future CI run is separate evidence from these local results.
+
+The initial Ubuntu CI run exposed a test-fixture portability issue: raw
+`unshare` UID mapping was blocked by AppArmor even though the production
+Bubblewrap sandbox worked. The bind-mount fixture now uses Bubblewrap itself,
+with mount capability limited to its disposable namespace. The production
+runner's capability drop and disabled user namespaces remain in effect.
+No AppArmor, sysctl or desktop settings were changed to run the tests.
 
 This is implementation/test evidence, **not an independent security review**.
 No self-review verdict is issued. Current exact-commit APPROVE reviews from both

@@ -1,6 +1,6 @@
 # PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 # written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-# modified-by: codex/gpt-6 | 2026-11-13 | fdeaacfb9f10fa420f943572f343014a8be6129d
+# modified-by: codex/gpt-6 | 2026-11-13 | :/portable-bind-mount-fixture-v1
 # reviews: pending current exact-commit claude-code and grok-build approval
 # END PROVENANCE
 """Synthetic fixtures only. Set GUARD_REQUIRE_ISOLATION=1 to forbid skips."""
@@ -369,11 +369,21 @@ else:
 finally:
     os.close(fd)
 '''.replace("ROOT", repr(str(f.root / "cleared")))
-        # unshare provides capabilities only inside its new namespace.
-        result = subprocess.run(["/usr/bin/unshare", "--user", "--map-root-user", "--mount",
-                                 "/bin/sh", "-ec", 'mount --bind "$1" "$2"; exec "$3" -c "$4"',
-                                 "guard-test", str(f.root / "licensed"), str(f.root / "cleared/nested"),
-                                 sys.executable, code], capture_output=True, cwd=REPO, timeout=10)
+        # Use the same approved namespace creator as the runner. Ubuntu's
+        # AppArmor policy can allow bwrap while refusing raw unshare UID maps.
+        # This trusted fixture helper has mount capability ONLY in its private
+        # namespace; it is not the agent sandbox. No host-wide mount is changed.
+        helper = [runner.BWRAP, "--unshare-user", "--unshare-pid", "--die-with-parent",
+                  "--uid", "0", "--gid", "0", "--cap-add", "CAP_SYS_ADMIN",
+                  "--clearenv", "--ro-bind", "/usr", "/usr"]
+        for name in ("bin", "sbin", "lib", "lib64"):
+            helper += ["--symlink", "usr/" + name, "/" + name]
+        helper += ["--ro-bind", REPO, "/repo", "--bind", str(f.root), str(f.root),
+                   "--proc", "/proc", "--dev", "/dev", "--chdir", "/repo",
+                   "--setenv", "PATH", "/usr/bin:/bin", "--", "/bin/sh", "-ec",
+                   'mount --bind "$1" "$2"; exec /usr/bin/python3 -c "$3"',
+                   "guard-test", str(f.root / "licensed"), str(f.root / "cleared/nested"), code]
+        result = subprocess.run(helper, capture_output=True, cwd=REPO, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr.decode())
 
     def test_network_relay_mode_preserves_filesystem_boundary(self):

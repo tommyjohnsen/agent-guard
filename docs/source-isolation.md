@@ -1,7 +1,7 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-modified-by: codex/gpt-6 | 2026-11-13 | fdeaacfb9f10fa420f943572f343014a8be6129d
+modified-by: codex/gpt-6 | 2026-11-13 | :/portable-bind-mount-fixture-v1
 reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->
@@ -31,8 +31,11 @@ python3 -m venv .venv
 /usr/bin/bwrap --version
 ```
 
-`util-linux` and `mount` are needed by the bind-mount acceptance test, not the
-runner. Existing scanner/permission tests also use `acl` when available.
+`mount` is needed by the bind-mount acceptance test, not the runner. Its trusted
+fixture helper uses Bubblewrap with a namespace-local root identity and mount
+capability to construct a synthetic adversarial mount; the actual agent runner
+always drops capabilities and disables further user namespaces. No host mount
+or security policy is changed. Existing permission tests use `acl` when available.
 The example assumes a merged `/usr` containing `/usr/bin/python3` and its
 stdlib/libraries. `/bin`, `/sbin`, `/lib`, `/lib64` point into that runtime.
 Non-merged systems need a separately prepared merged runtime directory.

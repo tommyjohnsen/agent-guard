@@ -1,6 +1,6 @@
 # PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 # written-by: unknown (pre-provenance) | 2026-10-09 | f032f17ae5ef38af48d96e0a5c10e4bce725fbba
-# modified-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
+# modified-by: codex/gpt-6 | 2026-11-13 | fdeaacfb9f10fa420f943572f343014a8be6129d
 # reviews: pending current exact-commit claude-code and grok-build approval
 # END PROVENANCE
 # agent-guard: secret scanner, filesystem permission verifier, action policy gate.

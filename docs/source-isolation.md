@@ -1,7 +1,7 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-modified-by: codex/gpt-6 | 2026-11-13 | 23045fe4b66faf0aeb6489c3fdd7f3fc3d119000
+modified-by: codex/gpt-6 | 2026-11-13 | :/setup-bind-mount-fixture-v2
 reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->
@@ -25,17 +25,16 @@ nothing and changes no system settings):
 
 ```sh
 sudo apt-get update
-sudo apt-get install bubblewrap python3 python3-venv util-linux mount
+sudo apt-get install bubblewrap python3 python3-venv
 python3 -m venv .venv
 .venv/bin/python -m pip install .
 /usr/bin/bwrap --version
 ```
 
-`mount` is needed by the bind-mount acceptance test, not the runner. Its trusted
-fixture helper uses Bubblewrap with a namespace-local root identity and mount
-capability to construct a synthetic adversarial mount; the actual agent runner
-always drops capabilities and disables further user namespaces. No host mount
-or security policy is changed. Existing permission tests use `acl` when available.
+The bind-mount test asks Bubblewrap to construct a synthetic adversarial nested
+mount during setup, then runs its resolution check with capabilities dropped.
+It needs no separate `mount` or `unshare` helper and changes no host mount or
+security policy. Existing permission tests use `acl` when available.
 The example assumes a merged `/usr` containing `/usr/bin/python3` and its
 stdlib/libraries. `/bin`, `/sbin`, `/lib`, `/lib64` point into that runtime.
 Non-merged systems need a separately prepared merged runtime directory.

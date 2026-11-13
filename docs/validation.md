@@ -1,7 +1,7 @@
 <!--
 PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-modified-by: codex/gpt-6 | 2026-11-13 | 23045fe4b66faf0aeb6489c3fdd7f3fc3d119000
+modified-by: codex/gpt-6 | 2026-11-13 | :/setup-bind-mount-fixture-v2
 reviews: pending current exact-commit claude-code and grok-build approval
 END PROVENANCE
 -->
@@ -65,8 +65,9 @@ it; a future CI run is separate evidence from these local results.
 
 The initial Ubuntu CI run exposed a test-fixture portability issue: raw
 `unshare` UID mapping was blocked by AppArmor even though the production
-Bubblewrap sandbox worked. The bind-mount fixture now uses Bubblewrap itself,
-with mount capability limited to its disposable namespace. The production
+Bubblewrap sandbox worked. AppArmor also denied a helper's mount syscall.
+The fixture now asks Bubblewrap to create the synthetic nested bind mount during
+setup, then tests resolution with all capabilities dropped. The production
 runner's capability drop and disabled user namespaces remain in effect.
 No AppArmor, sysctl or desktop settings were changed to run the tests.
 

@@ -1,6 +1,6 @@
 # PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 # written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-# modified-by: codex/gpt-6 | 2026-11-13 | 23045fe4b66faf0aeb6489c3fdd7f3fc3d119000
+# modified-by: codex/gpt-6 | 2026-11-13 | :/setup-bind-mount-fixture-v2
 # reviews: pending current exact-commit claude-code and grok-build approval
 # END PROVENANCE
 """Synthetic fixtures only. Set GUARD_REQUIRE_ISOLATION=1 to forbid skips."""
@@ -354,10 +354,11 @@ for family, address in [(socket.AF_INET, ('127.0.0.1', PORT)),
         # Create the adversarial mount in a disposable user/mount namespace,
         # never in the desktop's namespace. openat2 must return EXDEV.
         f = self.fixture
-        (f.root / "cleared/nested").mkdir()
         code = '''
-import os
+import os, sys
+sys.path.insert(0, '/repo')
 from guardlib.runner import beneath, root_fd, IsolationError
+assert open('/fixtures/nested/document.txt', 'rb').read() == b'SYNTHETIC_FORBIDDEN_SENTINEL'
 fd = root_fd(ROOT)
 try:
     leaked = beneath(fd, 'nested/document.txt', os.O_RDONLY)
@@ -368,21 +369,20 @@ else:
     raise AssertionError('bind mount crossed')
 finally:
     os.close(fd)
-'''.replace("ROOT", repr(str(f.root / "cleared")))
+'''.replace("ROOT", repr('/fixtures'))
         # Use the same approved namespace creator as the runner. Ubuntu's
         # AppArmor policy can allow bwrap while refusing raw unshare UID maps.
-        # This trusted fixture helper has mount capability ONLY in its private
-        # namespace; it is not the agent sandbox. No host-wide mount is changed.
+        # Bubblewrap constructs the actual nested bind mount before dropping
+        # capabilities. The helper needs no mount/unshare privilege itself.
+        # No host-wide mount or security setting is changed.
         helper = [runner.BWRAP, "--unshare-user", "--unshare-pid", "--die-with-parent",
-                  "--uid", "0", "--gid", "0", "--cap-add", "CAP_SYS_ADMIN",
-                  "--clearenv", "--ro-bind", "/usr", "/usr"]
+                  "--cap-drop", "ALL", "--clearenv", "--ro-bind", "/usr", "/usr"]
         for name in ("bin", "sbin", "lib", "lib64"):
             helper += ["--symlink", "usr/" + name, "/" + name]
-        helper += ["--ro-bind", REPO, "/repo", "--bind", str(f.root), str(f.root),
+        helper += ["--ro-bind", REPO, "/repo", "--dir", "/fixtures",
+                   "--ro-bind", str(f.root / "licensed"), "/fixtures/nested",
                    "--proc", "/proc", "--dev", "/dev", "--chdir", "/repo",
-                   "--setenv", "PATH", "/usr/bin:/bin", "--", "/bin/sh", "-ec",
-                   'mount --bind "$1" "$2"; exec /usr/bin/python3 -c "$3"',
-                   "guard-test", str(f.root / "licensed"), str(f.root / "cleared/nested"), code]
+                   "--", "/usr/bin/python3", "-I", "-c", code]
         result = subprocess.run(helper, capture_output=True, cwd=REPO, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr.decode())
 

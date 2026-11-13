@@ -60,3 +60,7 @@
 {"path":"tests/test_runner.py","blob":"5505ef9a76aaff34ff6609a66fe701efb8728ba6","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"23045fe4b66faf0aeb6489c3fdd7f3fc3d119000"}
 {"path":"docs/source-isolation.md","blob":"838e62e4e3fe05cc986f4691ad4b0ba353344223","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"23045fe4b66faf0aeb6489c3fdd7f3fc3d119000"}
 {"path":"docs/validation.md","blob":"e8b4a831e339f3197f1862a7fb6dac5df3bc330e","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":"23045fe4b66faf0aeb6489c3fdd7f3fc3d119000"}
+{"path":"tests/test_runner.py","blob":"e794e83773c0d68312038a62718b4ffe60274b76","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/setup-bind-mount-fixture-v2"}
+{"path":"docs/source-isolation.md","blob":"9cf248383fd117e69546886412d93673ec047849","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/setup-bind-mount-fixture-v2"}
+{"path":"docs/validation.md","blob":"e41b6e4ef38f4772f77e34d34aa26e9517708b8e","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/setup-bind-mount-fixture-v2"}
+{"path":".github/workflows/test.yml","blob":"e5e99ea47ce194f9786d56381a12bbfd1ca79e8b","event":"written","by":"codex/gpt-6","date":"2026-11-13","commit":":/setup-bind-mount-fixture-v2"}

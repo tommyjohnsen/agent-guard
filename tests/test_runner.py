@@ -1,6 +1,6 @@
 # PROVENANCE (mirror of .provenance/ledger.jsonl; ledger wins)
 # written-by: codex/gpt-6 | 2026-11-13 | :/isolate-capstone-sources-v1
-# modified-by: codex/gpt-6 | 2026-11-13 | :/setup-bind-mount-fixture-v2
+# modified-by: codex/gpt-6 | 2026-11-13 | 9c5efd8b0424542d2759043bbb402e9a51d58c27
 # reviews: pending current exact-commit claude-code and grok-build approval
 # END PROVENANCE
 """Synthetic fixtures only. Set GUARD_REQUIRE_ISOLATION=1 to forbid skips."""
